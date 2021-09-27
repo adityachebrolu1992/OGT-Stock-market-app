@@ -1,0 +1,22 @@
+#card-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: auto;
+    justify-content: center;
+    width: 70%;
+
+    background-color: #70ade9;
+    border-radius: 30px;
+    padding: 0 10px;
+}
+#inner-container {
+    display: flex;;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+#list-button {
+    background-color: rgb(56, 37, 139);
+    border-radius: 10%;
+}
