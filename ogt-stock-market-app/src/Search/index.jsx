@@ -40,23 +40,25 @@ export default function Search(props) {
     function searchHandler() {
         // console.clear();
         let searchedCompany = myRef.current.value;
-        let request = require("request");
-        let url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchedCompany}&apikey=9E3RT7E2BU9RO7SW`;
-        request.get({
-            url: url,
-            json: true,
-            headers: { "User-Agent": "request" }
-        }, (err, res, data) => {
-            if (err) {
-                console.log("Error:", err);
-            } else if (res.statusCode !== 200) {
-                console.log("Status:", res.statusCode);
-            } else {
-                console.log("data--->>",data);
-                setCompanyDetails(data)
+        if(searchedCompany.length>3){
+            let request = require("request");
+            let url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchedCompany}&apikey=9E3RT7E2BU9RO7SW`;
+            request.get({
+                url: url,
+                json: true,
+                headers: { "User-Agent": "request" }
+            }, (err, res, data) => {
+                if (err) {
+                    console.log("Error:", err);
+                } else if (res.statusCode !== 200) {
+                    console.log("Status:", res.statusCode);
+                } else {
+                    console.log("data--->>",data);
+                    setCompanyDetails(data)
+                }
             }
+            )
         }
-        )
     }
 
     return (
