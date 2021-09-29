@@ -38,7 +38,7 @@ export default function Search(props) {
     const myRef = useRef();
 
     function searchHandler() {
-        console.clear();
+        // console.clear();
         let searchedCompany = myRef.current.value;
         let request = require("request");
         let url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchedCompany}&apikey=9E3RT7E2BU9RO7SW`;
@@ -52,7 +52,7 @@ export default function Search(props) {
             } else if (res.statusCode !== 200) {
                 console.log("Status:", res.statusCode);
             } else {
-                console.log(data);
+                console.log("data--->>",data);
                 setCompanyDetails(data)
             }
         }
@@ -70,7 +70,7 @@ export default function Search(props) {
                 </datalist>
                 <button onClick={searchHandler} id="button">Search</button>
             </label>
-            <CompanysDetail companyDetails={companyDetails} myList={props.myList} setMyList={props.setMyList} />
+            <CompanysDetail walletAmount={props.walletAmount} setWalletAmount={props.setWalletAmount} companyDetails={companyDetails} myList={props.myList} setMyList={props.setMyList} />
         </div>
     )
 }
