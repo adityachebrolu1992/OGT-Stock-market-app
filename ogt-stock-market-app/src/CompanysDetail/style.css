@@ -34,3 +34,6 @@ label{
     flex-wrap: wrap;
     flex-direction: column;
 } */
+#amount-message{
+    color: red;
+}

@@ -5,11 +5,22 @@ import CompanysDetail from "../CompanysDetail";
 export default function Search(props) {
     const [searchedList, setSearchedList] = useState([]);
     const [companyDetails, setCompanyDetails] = useState([])
+    const [sharePrice, setSharePrice] = useState(0)
+
+    function randomValueGenerator() {
+        let min = 1;
+        let max = 10;
+        let val = (min + (Math.random() * (max - min))).toFixed(0);
+        return val % 2;
+    }
+
     function changeHandler(event) {
         let searchedKeyWord = event.target.value;
-        if (searchedKeyWord.length > 0) {
+        const key = ["9E3RT7E2BU9RO7SW", "A9ELA1B2R92C0MU9"];
+        let index = randomValueGenerator();
+        if (searchedKeyWord.length >= 3) {
             let request = require("request");
-            let url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchedKeyWord}&apikey=9E3RT7E2BU9RO7SW`;
+            let url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchedKeyWord}&apikey=` + key[index];
             request.get({
                 url: url,
                 json: true,
@@ -40,25 +51,45 @@ export default function Search(props) {
     function searchHandler() {
         // console.clear();
         let searchedCompany = myRef.current.value;
-        if(searchedCompany.length>3){
-            let request = require("request");
-            let url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchedCompany}&apikey=9E3RT7E2BU9RO7SW`;
-            request.get({
-                url: url,
-                json: true,
-                headers: { "User-Agent": "request" }
-            }, (err, res, data) => {
-                if (err) {
-                    console.log("Error:", err);
-                } else if (res.statusCode !== 200) {
-                    console.log("Status:", res.statusCode);
-                } else {
-                    console.log("data--->>",data);
-                    setCompanyDetails(data)
-                }
+        const key = ["9E3RT7E2BU9RO7SW", "A9ELA1B2R92C0MU9"];
+        let index = randomValueGenerator();
+        console.log("--->>", searchedCompany)
+        let request = require("request");
+        let url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${searchedCompany}&apikey=` + key[index];
+        request.get({
+            url: url,
+            json: true,
+            headers: { "User-Agent": "request" }
+        }, (err, res, data) => {
+            if (err) {
+                console.log("Error:", err);
+            } else if (res.statusCode !== 200) {
+                console.log("Status:", res.statusCode);
+            } else {
+                console.log("data--->>", data);
+                setCompanyDetails(data)
             }
-            )
         }
+        )
+        var url2 = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${searchedCompany}&apikey=` + key[index];
+
+        request.get({
+            url: url2,
+            json: true,
+            headers: { 'User-Agent': 'request' }
+        }, (err, res, data) => {
+            if (err) {
+                console.log('Error:', err);
+            } else if (res.statusCode !== 200) {
+                console.log('Status:', res.statusCode);
+            } else {
+                // data is successfully parsed as a JSON object:
+                let tempPrice = +data["Global Quote"]["05. price"];
+                let truncedTempPrice = tempPrice.toFixed(2);
+                setSharePrice(truncedTempPrice);
+            }
+        });
+
     }
 
     return (
@@ -72,7 +103,7 @@ export default function Search(props) {
                 </datalist>
                 <button onClick={searchHandler} id="button">Search</button>
             </label>
-            <CompanysDetail walletAmount={props.walletAmount} setWalletAmount={props.setWalletAmount} companyDetails={companyDetails} myList={props.myList} setMyList={props.setMyList} />
+            <CompanysDetail sharePrice={sharePrice} walletAmount={props.walletAmount} setWalletAmount={props.setWalletAmount} companyDetails={companyDetails} myList={props.myList} setMyList={props.setMyList} />
         </div>
     )
 }

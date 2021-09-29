@@ -6,7 +6,7 @@ import MyList from './MyList';
 
 function App() {
   const [myList, setMyList] = useState([])
-  const [walletAmount,setWalletAmount] = useState(30000);
+  const [walletAmount, setWalletAmount] = useState(30000);
   return (
     <div className="App">
       <div id="header-container">
